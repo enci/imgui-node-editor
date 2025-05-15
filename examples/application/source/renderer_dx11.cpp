@@ -27,10 +27,10 @@ struct RendererDX11 final
     void Present() override;
     void Resize(int width, int height) override;
 
-    ImTextureID CreateTexture(const void* data, int width, int height) override;
-    void        DestroyTexture(ImTextureID texture) override;
-    int         GetTextureWidth(ImTextureID texture) override;
-    int         GetTextureHeight(ImTextureID texture) override;
+    //ImTextureID CreateTexture(const void* data, int width, int height) override;
+    //void        DestroyTexture(ImTextureID texture) override;
+    //int         GetTextureWidth(ImTextureID texture) override;
+    //nt         GetTextureHeight(ImTextureID texture) override;
 
     HRESULT CreateDeviceD3D(HWND hWnd);
     void CleanupDeviceD3D();
@@ -170,26 +170,6 @@ void RendererDX11::CreateRenderTarget()
 void RendererDX11::CleanupRenderTarget()
 {
     if (m_mainRenderTargetView) { m_mainRenderTargetView->Release(); m_mainRenderTargetView = nullptr; }
-}
-
-ImTextureID RendererDX11::CreateTexture(const void* data, int width, int height)
-{
-    return ImGui_CreateTexture(data, width, height);
-}
-
-void RendererDX11::DestroyTexture(ImTextureID texture)
-{
-    return ImGui_DestroyTexture(texture);
-}
-
-int RendererDX11::GetTextureWidth(ImTextureID texture)
-{
-    return ImGui_GetTextureWidth(texture);
-}
-
-int RendererDX11::GetTextureHeight(ImTextureID texture)
-{
-    return ImGui_GetTextureHeight(texture);
 }
 
 # endif // RENDERER(IMGUI_DX11)

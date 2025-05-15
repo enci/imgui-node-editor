@@ -198,39 +198,6 @@ ImFont* Application::HeaderFont() const
     return m_HeaderFont;
 }
 
-ImTextureID Application::LoadTexture(const char* path)
-{
-    int width = 0, height = 0, component = 0;
-    if (auto data = stbi_load(path, &width, &height, &component, 4))
-    {
-        auto texture = CreateTexture(data, width, height);
-        stbi_image_free(data);
-        return texture;
-    }
-    else
-        return nullptr;
-}
-
-ImTextureID Application::CreateTexture(const void* data, int width, int height)
-{
-    return m_Renderer->CreateTexture(data, width, height);
-}
-
-void Application::DestroyTexture(ImTextureID texture)
-{
-    m_Renderer->DestroyTexture(texture);
-}
-
-int Application::GetTextureWidth(ImTextureID texture)
-{
-    return m_Renderer->GetTextureWidth(texture);
-}
-
-int Application::GetTextureHeight(ImTextureID texture)
-{
-    return m_Renderer->GetTextureHeight(texture);
-}
-
 ImGuiWindowFlags Application::GetWindowFlags() const
 {
     return
