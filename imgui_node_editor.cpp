@@ -1492,10 +1492,18 @@ void ed::EditorContext::End()
 
         m_DrawList->AddRectFilled(VIEW_POS, VIEW_POS + VIEW_SIZE, GetColor(StyleColor_Bg));
 
+        /*
         for (float x = fmodf(offset.x, GRID_SX); x < VIEW_SIZE.x; x += GRID_SX)
             m_DrawList->AddLine(ImVec2(x, 0.0f) + VIEW_POS, ImVec2(x, VIEW_SIZE.y) + VIEW_POS, GRID_COLOR);
         for (float y = fmodf(offset.y, GRID_SY); y < VIEW_SIZE.y; y += GRID_SY)
             m_DrawList->AddLine(ImVec2(0.0f, y) + VIEW_POS, ImVec2(VIEW_SIZE.x, y) + VIEW_POS, GRID_COLOR);
+        m_DrawList->AddRectFilled()
+        */
+
+        // Render a grid of rectangles
+        for (float x = fmodf(offset.x, GRID_SX); x < VIEW_SIZE.x; x += GRID_SX)
+            for (float y = fmodf(offset.y, GRID_SY); y < VIEW_SIZE.y; y += GRID_SY)
+                m_DrawList->AddRectFilled(ImVec2(x, y) + VIEW_POS, ImVec2(x + 4, y + 4) + VIEW_POS, GRID_COLOR);
     }
 # endif
 
