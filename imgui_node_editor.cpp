@@ -1668,6 +1668,31 @@ bool ed::EditorContext::DoLink(LinkId id, PinId startPinId, PinId endPinId, ImU3
     return true;
 }
 
+void ed::EditorContext::SetZoom(float zoom)
+{
+    if (zoom <= 0.0f)
+        return;
+
+    // Convert desired user zoom to internal scale (Scale = 1/zoom)
+    float newScale = 1.0f / zoom;
+
+    // Get current view center in screen space
+    auto windowPos  = m_NavigateAction.GetWindowScreenPos();
+    auto windowSize = m_NavigateAction.GetWindowScreenSize();
+    auto center     = ImVec2(windowPos.x + windowSize.x * 0.5f, windowPos.y + windowSize.y * 0.5f);
+
+    // Adjust scroll to keep the center stable
+    auto oldView = m_NavigateAction.GetView();
+    m_NavigateAction.m_Zoom = newScale;
+    auto newView = m_NavigateAction.GetView();
+
+    auto screenPos = m_Canvas.FromLocal(center, oldView);
+    auto canvasPos = m_Canvas.ToLocal(screenPos, newView);
+
+    auto offset = (canvasPos - center) * newScale;
+    m_NavigateAction.m_Scroll -= offset;
+}
+
 void ed::EditorContext::SetNodePosition(NodeId nodeId, const ImVec2& position)
 {
     auto node = FindNode(nodeId);
