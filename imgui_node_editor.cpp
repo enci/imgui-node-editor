@@ -648,6 +648,26 @@ void ed::Node::Draw(ImDrawList* drawList, DrawFlags flags)
     {
         drawList->ChannelsSetCurrent(m_Channel + c_NodeBackgroundChannel);
 
+        // Drop shadow using ImGui's built-in shadow rendering and style
+        const auto& imguiStyle = ImGui::GetStyle();
+        if (imguiStyle.WindowShadowSize > 0.0f)
+        {
+            const float offsetDist  = imguiStyle.WindowShadowOffsetDist;
+            const float offsetAngle = imguiStyle.WindowShadowOffsetAngle;
+            const ImVec2 offset(
+                offsetDist * ImCos(offsetAngle),
+                offsetDist * ImSin(offsetAngle));
+
+            drawList->AddShadowRect(
+                m_Bounds.Min,
+                m_Bounds.Max,
+                ImGui::GetColorU32(ImGuiCol_WindowShadow),
+                imguiStyle.WindowShadowSize,
+                offset,
+                ImDrawFlags_ShadowCutOutShapeBackground,
+                m_Rounding);
+        }
+
         drawList->AddRectFilled(
             m_Bounds.Min,
             m_Bounds.Max,
@@ -691,6 +711,8 @@ void ed::Node::Draw(ImDrawList* drawList, DrawFlags flags)
         drawRect(GetRegionBounds(NodeRegion::Header), IM_COL32(0, 255, 255, 64));
 # endif
 
+        // Draw border on content channel so it renders above header background
+        drawList->ChannelsSetCurrent(m_Channel + c_NodeContentChannel);
         DrawBorder(drawList, m_BorderColor, m_BorderWidth);
     }
     else if (flags & Selected)
@@ -698,7 +720,8 @@ void ed::Node::Draw(ImDrawList* drawList, DrawFlags flags)
         const auto  borderColor = Editor->GetColor(StyleColor_SelNodeBorder);
         const auto& editorStyle = Editor->GetStyle();
 
-        drawList->ChannelsSetCurrent(m_Channel + c_NodeBaseChannel);
+        // Draw on content channel so border renders above header background
+        drawList->ChannelsSetCurrent(m_Channel + c_NodeContentChannel);
 
         DrawBorder(drawList, borderColor, editorStyle.SelectedNodeBorderWidth, editorStyle.SelectedNodeBorderOffset);
     }
@@ -707,7 +730,8 @@ void ed::Node::Draw(ImDrawList* drawList, DrawFlags flags)
         const auto  borderColor = Editor->GetColor(StyleColor_HovNodeBorder);
         const auto& editorStyle = Editor->GetStyle();
 
-        drawList->ChannelsSetCurrent(m_Channel + c_NodeBaseChannel);
+        // Draw on content channel so border renders above header background
+        drawList->ChannelsSetCurrent(m_Channel + c_NodeContentChannel);
 
         DrawBorder(drawList, borderColor, editorStyle.HoveredNodeBorderWidth, editorStyle.HoverNodeBorderOffset);
     }
