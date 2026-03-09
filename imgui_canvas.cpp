@@ -345,7 +345,12 @@ ImRect ImGuiEx::Canvas::CalcViewRect(const CanvasView& view) const
 
 void ImGuiEx::Canvas::UpdateViewTransformPosition()
 {
-    m_ViewTransformPosition = m_View.Origin + m_WidgetPosition;
+    // Floor to integer pixels so the canvas transform never lands on a
+    // fractional screen coordinate. Without this, panning or a fractional
+    // widget position causes every vertex to sit between pixels, making all
+    // node geometry blurry even at 100% zoom.
+    auto pos = m_View.Origin + m_WidgetPosition;
+    m_ViewTransformPosition = ImVec2(ImFloor(pos.x), ImFloor(pos.y));
 }
 
 void ImGuiEx::Canvas::SaveInputState()
