@@ -648,26 +648,6 @@ void ed::Node::Draw(ImDrawList* drawList, DrawFlags flags)
     {
         drawList->ChannelsSetCurrent(m_Channel + c_NodeBackgroundChannel);
 
-        // Drop shadow using ImGui's built-in shadow rendering and style
-        const auto& imguiStyle = ImGui::GetStyle();
-        if (imguiStyle.WindowShadowSize > 0.0f)
-        {
-            const float offsetDist  = imguiStyle.WindowShadowOffsetDist;
-            const float offsetAngle = imguiStyle.WindowShadowOffsetAngle;
-            const ImVec2 offset(
-                offsetDist * ImCos(offsetAngle),
-                offsetDist * ImSin(offsetAngle));
-
-            drawList->AddShadowRect(
-                m_Bounds.Min,
-                m_Bounds.Max,
-                ImGui::GetColorU32(ImGuiCol_WindowShadow),
-                imguiStyle.WindowShadowSize,
-                offset,
-                ImDrawFlags_ShadowCutOutShapeBackground,
-                m_Rounding);
-        }
-
         drawList->AddRectFilled(
             m_Bounds.Min,
             m_Bounds.Max,
