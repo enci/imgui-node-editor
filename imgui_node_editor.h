@@ -386,6 +386,7 @@ IMGUI_NODE_EDITOR_API int BreakLinks(NodeId nodeId); // Break all links connecte
 IMGUI_NODE_EDITOR_API int BreakLinks(PinId pinId); // Break all links connected to this pin
 
 IMGUI_NODE_EDITOR_API void NavigateToContent(float duration = -1);
+IMGUI_NODE_EDITOR_API void NavigateToContentCenter(float duration = -1);
 IMGUI_NODE_EDITOR_API void NavigateToSelection(bool zoomIn = false, float duration = -1);
 
 IMGUI_NODE_EDITOR_API bool ShowNodeContextMenu(NodeId* nodeId);
